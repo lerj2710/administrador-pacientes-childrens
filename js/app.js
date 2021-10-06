@@ -13,6 +13,10 @@ const contenedorCitas = document.querySelector('#citas');
 class Citas{
     constructor(){
         this.citas = [];
+    };
+    agregarCita(cita){
+        this.citas = [...this.citas, cita];
+        console.log(this.citas);
     }
 };
 
@@ -20,9 +24,6 @@ class UI{
     imprimierAlerta(mensaje, tipo){
         //crear div
         const divMensaje = document.createElement('div');
-        //agregar el mensaje
-        divMensaje.textContent = mensaje;
-        //agregar algunas clases
         divMensaje.classList.add('text-center', 'alert','d-block','col-12');
         //validar 
         if (tipo === 'error') {
@@ -30,16 +31,19 @@ class UI{
         }else{
             divMensaje.classList.add('alert-success');
         }
+        //agregar el mensaje
+        divMensaje.textContent = mensaje;
         //Agregar al DOM
         document.querySelector('#contenido').insertBefore(divMensaje, document.querySelector('.agregar-cita'));
+        //quitar la alerta
         setTimeout(() => {
             divMensaje.remove();
         }, 3000);
     };
 };
 //instanciar clases
-const citas = new Citas();
 const ui = new UI();
+const administrarCitas = new Citas();
 //=========Eventos=======================
 eventListener();
 function eventListener() {
@@ -60,7 +64,7 @@ const citaObj = {
     telefono: '',
     fecha: '',
     hora: '',
-    simtomas: '',
+    sintomas: ''
 
 };
 //=========Funciones===========================
@@ -68,7 +72,7 @@ const citaObj = {
 //Agrega datos al objecto de citas
 function datosCitas(e) {
     citaObj[e.target.name] = e.target.value;// desde aqui puedo ingresar al valor del obj y saber que esta escribiendo
-    
+    // console.log(citaObj);
 };
 
 //Valida y agrega una nueva cita a la clase de citas
@@ -77,11 +81,31 @@ function nuevaCita(e) {
     e.preventDefault();
     
     //Extraer la informacion del objeto
-    const {children, padres,telefono, fecha,hora, simtomas } = citaObj
+    const {children, padres, telefono, fecha, hora, sintomas } = citaObj;
     // validar que no esten vacios
-    if(children === '' || padres === '' || telefono === '' || fecha === '' || hora === '' || simtomas === ''){
-        ui.imprimierAlerta('todos los campos son obligatorios', 'error');
+    if(children === '' || padres === '' || telefono === '' || fecha === '' || hora === '' || sintomas === ''){
+      ui.imprimierAlerta('todos los campos son obligatorios', 'error');
+           return;
+    };
+
+    //generar un id
+    citaObj.id = Date.now()
+    //creando cita
+    // console.log(citaObj);
+    administrarCitas.agregarCita({...citaObj});
     
-        return;
-    }
+    //reiniciar el obj
+    reinicarObj();
+    // reiniciar el formularioo
+    formulario.reset();
+}
+
+//funcion para reiniciar el obj
+function reinicarObj() {
+    citaObj.children = '';
+    citaObj.padres = '';
+    citaObj.telefono = '';
+    citaObj.fecha = '';
+    citaObj.hora = '';
+    citaObj.sintomas = '';
 }
