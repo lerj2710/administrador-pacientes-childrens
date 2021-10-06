@@ -40,6 +40,74 @@ class UI{
             divMensaje.remove();
         }, 3000);
     };
+    imprimierCitas({citas}){// aplicando distructory desde adentro
+       
+        this.limpiarHtml();
+        citas.forEach(cita => {
+
+            const {children, padres, telefono, fecha, hora, sintomas, id } = cita;
+                //crear un div
+            const divCita = document.createElement('div');
+                 divCita.classList.add('cita', 'p-3');
+                 divCita.dataset.id = id;
+
+            //scripting
+          
+                    //======Hijo========
+
+                    const childrenParrafo = document.createElement('h2');
+                    childrenParrafo.classList.add('card-title', 'font-weignt-bolder');
+                    childrenParrafo.textContent= children;
+
+
+                    //======Padre========
+
+                    const padresParrafo = document.createElement('p');
+                    padresParrafo.innerHTML= ` <span class="font-weignt-bolder"> Padre:</span> ${padres}  `;
+                    childrenParrafo.textContent= children;
+
+
+                    //======Tefelono========
+
+                    const telefonoParrafo = document.createElement('p');
+                    telefonoParrafo.innerHTML= ` <span class="font-weignt-bolder">Tlf:</span> ${telefono}  `;
+
+
+                    //======Fecha========
+
+                    const fechaParrafo = document.createElement('p');
+                    fechaParrafo.innerHTML= ` <span class="font-weignt-bolder"> Fecha:</span> ${fecha}  `;
+
+
+                    //======Hora========
+
+                    const horaParrafo = document.createElement('p');
+                    horaParrafo.innerHTML= ` <span class="font-weignt-bolder"> Padre:</span> ${hora}  `;
+
+                    //======Sintomas========
+
+                    const sintomasParrafo = document.createElement('p');
+                    sintomasParrafo.innerHTML= ` <span class="font-weignt-bolder"> Padre:</span> ${sintomas}  `;
+                    // agregar al divCitas
+                    divCita.appendChild(childrenParrafo);
+                    divCita.appendChild(padresParrafo);
+                    divCita.appendChild(telefonoParrafo);
+                    divCita.appendChild(fechaParrafo);
+                    divCita.appendChild(horaParrafo);
+                    divCita.appendChild(sintomasParrafo);
+
+                  // instertar al Html
+                  contenedorCitas.appendChild(divCita);
+        })
+            
+            
+        };
+        limpiarHtml(){
+            while (contenedorCitas.firstChild) {
+                
+                contenedorCitas.removeChild(contenedorCitas.firstChild)
+            }
+        };
 };
 //instanciar clases
 const ui = new UI();
@@ -96,8 +164,12 @@ function nuevaCita(e) {
     
     //reiniciar el obj
     reinicarObj();
+
     // reiniciar el formularioo
     formulario.reset();
+
+    //mostrar cita en el HTML
+    ui.imprimierCitas(administrarCitas);
 }
 
 //funcion para reiniciar el obj
