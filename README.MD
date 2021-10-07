@@ -18,4 +18,4 @@
 
 # link
 
-[js/app.js](el codigo de JavaScritp)
+[el codigo de JavaScritp](js/app.js)
