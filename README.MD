@@ -6,7 +6,7 @@
 - eventos
 - funciones
 
-# lista
+# Lo que se logro hacer en el proyecto
 1. primer registro de pacientes
 2. primeros pasos con el proyecto 
 3. validar y agregar el mensaje de error
@@ -16,3 +16,6 @@
 7. se agrego el boton de Editar
 8. se utilizo el modo editar correctamente, cambios funcional
 
+# link
+
+[js/app.js](el codigo de JavaScritp)
