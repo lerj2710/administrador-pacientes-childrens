@@ -17,7 +17,11 @@ class Citas{
     agregarCita(cita){
         this.citas = [...this.citas, cita];
         console.log(this.citas);
+    };
+    eliminarCita(id){
+        this.citas = this.citas.filter( cita => cita.id !== id);
     }
+
 };
 
 class UI{
@@ -95,9 +99,26 @@ class UI{
                     divCita.appendChild(fechaParrafo);
                     divCita.appendChild(horaParrafo);
                     divCita.appendChild(sintomasParrafo);
+        
 
                   // instertar al Html
                   contenedorCitas.appendChild(divCita);
+
+                  //crear botones
+                  const btnEliminar = document.createElement('button');
+                        btnEliminar.classList.add('btn', 'btn-danger','mr-2');
+                        btnEliminar.innerHTML= `Eliminar <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>`;
+                      const btnEditar = document.createElement('button');
+                      btnEditar.classList.add('btn', 'btn-warning','mr-2');
+                      btnEditar.innerHTML= `Editar <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>`;
+                    btnEliminar.onclick = ()=> eliminarCita(id);
+
+                      divCita.appendChild(btnEliminar);
+                      divCita.appendChild(btnEditar);
         })
             
             
@@ -180,4 +201,13 @@ function reinicarObj() {
     citaObj.fecha = '';
     citaObj.hora = '';
     citaObj.sintomas = '';
+}
+
+function eliminarCita(id) {
+  //ELIMINAR LA CITA
+  administrarCitas.eliminarCita(id);
+  //MOSTAR UN MENSAJE
+  ui.imprimierAlerta('Se elimino Correctamente');
+  //CARGAR EL HTML
+  ui.imprimierCitas(administrarCitas);
 }
