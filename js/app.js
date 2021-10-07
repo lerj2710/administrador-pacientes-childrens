@@ -21,7 +21,10 @@ class Citas{
     };
     eliminarCita(id){
         this.citas = this.citas.filter( cita => cita.id !== id);
-    }
+    };
+    editarCita(citaActulizada){
+        this.citas = this.citas.map(cita => cita.id === citaActulizada.id ? citaActulizada : cita);
+    };
 
 };
 
@@ -132,9 +135,10 @@ class UI{
             }
         };
 };
-//instanciar clases
+        //instanciar clases
 const ui = new UI();
 const administrarCitas = new Citas();
+
 //=========Eventos=======================
 eventListener();
 function eventListener() {
@@ -180,7 +184,11 @@ function nuevaCita(e) {
     };
     if (editando) {
         ui.imprimierAlerta('Se Edito correctamente');
+        //pasar el objeto de la cita a edicion
+        administrarCitas.editarCita({...citaObj});
+
         formulario.querySelector('button[type="submit"]').textContent= 'Crear Cita';
+        //quitar edicion
         editando= false;
 
     }else {
