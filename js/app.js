@@ -1,4 +1,5 @@
 //========= Variables===============
+let DB;
 const childrensInput  = document.querySelector('#childrens');
 const padresInput  = document.querySelector('#padres');
 const telefonoInput  = document.querySelector('#telefono');
@@ -10,7 +11,23 @@ const sintomasInput  = document.querySelector('#sintomas');
 const formulario = document.querySelector('#nueva-cita');
 const contenedorCitas = document.querySelector('#citas');
 
-let editando;
+
+window.onload = ()=>{
+    crearDB();
+    eventListener(); 
+};
+//=========Eventos=======================
+function eventListener() {
+    childrensInput.addEventListener('input', datosCitas);
+    padresInput.addEventListener('input', datosCitas);
+    telefonoInput.addEventListener('input', datosCitas);
+    fechaInput.addEventListener('input', datosCitas);
+    horaInput.addEventListener('input', datosCitas);
+    sintomasInput.addEventListener('input', datosCitas);
+
+    formulario.addEventListener('submit', nuevaCita);
+}
+
 //======== Clases===========
 class Citas{
     constructor(){
@@ -138,19 +155,9 @@ class UI{
         //instanciar clases
 const ui = new UI();
 const administrarCitas = new Citas();
+let editando = false;
 
-//=========Eventos=======================
-eventListener();
-function eventListener() {
-    childrensInput.addEventListener('input', datosCitas);
-    padresInput.addEventListener('input', datosCitas);
-    telefonoInput.addEventListener('input', datosCitas);
-    fechaInput.addEventListener('input', datosCitas);
-    horaInput.addEventListener('input', datosCitas);
-    sintomasInput.addEventListener('input', datosCitas);
 
-    formulario.addEventListener('submit', nuevaCita);
-}
 
 //==== Obj principal =====================
 const citaObj = {
@@ -253,4 +260,37 @@ function cargarEdicion(cita) {
     formulario.querySelector('button[type="submit"]').textContent= 'Editando Cita';
 
     editando = true;
+}
+
+function crearDB() {
+    // craar la DB
+    const crearDB = window.indexedDB.open('citas',1);
+        // si hay un error
+        crearDB.onerror = ()=>{
+            console.log('hubo un error');
+        };
+    // si todo sale bien
+        crearDB.onsuccess = ()=>{
+            console.log('se creo la base de datos');
+            BD= crearDB.result;
+        }
+
+    //configurar la base de datos
+    crearDB.onupgradeneeded = e =>{
+        const db = e.target.result;
+        const objectStore = db.createObjectStore('citas',{
+            keyPath: 'id',
+            autoIncrement: true
+        });
+        // definir las columnas
+        objectStore.createIndex('children','children',{unique: false});
+        objectStore.createIndex('padres','padres',{unique: false});
+        objectStore.createIndex('telefono','telefono',{unique: false});
+        objectStore.createIndex('fecha','fecha',{unique: false});
+        objectStore.createIndex('hora','hora',{unique: false});
+        objectStore.createIndex('sintomas','sintomas',{unique: false});
+        objectStore.createIndex('id','id',{unique: true});
+        console.log('DB creada y lista');
+
+    }
 }
